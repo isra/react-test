@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Contacts from "./Contacts";
 
 class Contact extends Component {
   /* static propTypes = {
@@ -10,7 +9,7 @@ class Contact extends Component {
   }; */
 
   state = {
-    a: "a"
+    showContactInfo: false
   };
 
   /* constructor() {
@@ -20,30 +19,39 @@ class Contact extends Component {
     };
   } */
 
-  onShowClick = (id, e) => {
-    console.log(id, e.target);
-  };
+  /* onShowClick = e => {
+    this.setState({
+      showContactInfo: !this.state.showContactInfo
+    });
+  }; */
 
   render() {
-    const { id, name, email, phone } = this.props.contact;
+    const { name, email, phone } = this.props.contact;
+    const { showContactInfo } = this.state;
 
     return (
       <div className="card card-body mb-3">
         <h4>
           {name}{" "}
           <i
-            onClick={this.onShowClick.bind(this, id)}
+            onClick={() => {
+              this.setState({
+                showContactInfo: !this.state.showContactInfo
+              });
+            }}
             className="fas fa-sort-down"
           />
         </h4>
-        <ul className="list-group">
-          <li className="list-group-item">
-            <div>Email: {email}</div>
-          </li>
-          <li className="list-group-item">
-            <div>Phone: {phone}</div>
-          </li>
-        </ul>
+        {showContactInfo ? (
+          <ul className="list-group">
+            <li className="list-group-item">
+              <div>Email: {email}</div>
+            </li>
+            <li className="list-group-item">
+              <div>Phone: {phone}</div>
+            </li>
+          </ul>
+        ) : null}
       </div>
     );
   }
