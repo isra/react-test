@@ -4,17 +4,6 @@ import Contact from "./Contact";
 import { Consumer } from "../context";
 
 class Contacts extends Component {
-  constructor() {
-    super();
-  }
-
-  deleteContact = (id, e) => {
-    console.log(id);
-    this.setState({
-      contacts: this.state.contacts.filter(e => e.id !== id)
-    });
-  };
-
   render() {
     return (
       <Consumer>
@@ -23,11 +12,7 @@ class Contacts extends Component {
           return (
             <React.Fragment>
               {contacts.map(contact => (
-                <Contact
-                  key={contact.id}
-                  contact={contact}
-                  deleteClickHandler={this.deleteContact.bind(this, contact.id)}
-                />
+                <Contact key={contact.id} contact={contact} />
               ))}
             </React.Fragment>
           );
