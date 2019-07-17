@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Consumer } from "../../context";
+import ControlInputGroup from "../layout/ControlInputGroup";
 import uuid from "uuid";
 
 class AddContact extends Component {
@@ -48,42 +49,30 @@ class AddContact extends Component {
                 <div className="card-header">Add Contact</div>
                 <div className="card-body">
                   <form onSubmit={this.onSaveContact.bind(this, dispatch)}>
-                    <div className="form-group">
-                      <label htmlFor="email">Email</label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        id="email"
-                        placeholder="Enter Email"
-                        value={email}
-                        onChange={this.onChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="name">Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="name"
-                        id="name"
-                        placeholder="Enter Name"
-                        value={name}
-                        onChange={this.onChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="phone">Phone</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="phone"
-                        id="phone"
-                        placeholder="Enter Phone"
-                        value={phone}
-                        onChange={this.onChange}
-                      />
-                    </div>
+                    <ControlInputGroup
+                      name="email"
+                      label="Email"
+                      type="email"
+                      placeholder="Enter Email"
+                      value={email}
+                      onChange={this.onChange}
+                    />
+                    <ControlInputGroup
+                      name="name"
+                      label="Name"
+                      type="text"
+                      placeholder="Enter Name"
+                      value={name}
+                      onChange={this.onChange}
+                    />
+                    <ControlInputGroup
+                      name="phone"
+                      label="Phone"
+                      type="text"
+                      placeholder="Enter Phone"
+                      value={phone}
+                      onChange={this.onChange}
+                    />
                     <button type="submit" className="btn btn-block btn-light">
                       Guardar
                     </button>
