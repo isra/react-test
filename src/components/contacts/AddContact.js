@@ -1,82 +1,99 @@
 import React, { Component } from "react";
+import { Consumer } from "../../context";
+import uuid from "uuid";
 
 class AddContact extends Component {
-  static defaultProps = {
-    name: "isra",
-    email: "israel@gmail.com",
-    phone: "555 555 5555"
+  state = {
+    email: "isra@gmail.com",
+    name: "Israel",
+    phone: "5555-555-555"
   };
 
-  onClickSave = e => {
+  onChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  onSaveContact = (dispatch, e) => {
     e.preventDefault();
-    const contact = {
-      name: this.nameInput.current.value,
-      email: this.emailInput.current.value,
-      phone: this.phoneInput.current.value
-    };
-    console.log(contact);
+    const { name, email, phone } = this.state;
+    dispatch({
+      type: "ADD_CONTACT",
+      payload: {
+        id: uuid.v1(),
+        name,
+        email,
+        phone
+      }
+    });
+
+    this.setState({
+      name: "",
+      email: "",
+      phone: ""
+    });
   };
-
-  constructor(props) {
-    super(props);
-
-    this.nameInput = React.createRef();
-    this.emailInput = React.createRef();
-    this.phoneInput = React.createRef();
-  }
 
   render() {
-    const { name, email, phone } = this.props;
+    const { name, email, phone } = this.state;
 
     return (
-      <div>
-        <div className="card mb-3">
-          <div className="card-header">Add Contact</div>
-          <div className="card-body">
-            <form onSubmit={this.onClickSave}>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  name="email"
-                  id="email"
-                  placeholder="Enter Email"
-                  defaultValue={email}
-                  ref={this.emailInput}
-                />
+      <Consumer>
+        {value => {
+          const { dispatch } = value;
+          return (
+            <div>
+              <div className="card mb-3">
+                <div className="card-header">Add Contact</div>
+                <div className="card-body">
+                  <form onSubmit={this.onSaveContact.bind(this, dispatch)}>
+                    <div className="form-group">
+                      <label htmlFor="email">Email</label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        id="email"
+                        placeholder="Enter Email"
+                        value={email}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="name">Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        id="name"
+                        placeholder="Enter Name"
+                        value={name}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phone">Phone</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="phone"
+                        id="phone"
+                        placeholder="Enter Phone"
+                        value={phone}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-block btn-light">
+                      Guardar
+                    </button>
+                  </form>
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="name"
-                  id="name"
-                  placeholder="Enter Name"
-                  defaultValue={name}
-                  ref={this.nameInput}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="phone">Phone</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="phone"
-                  id="phone"
-                  placeholder="Enter Phone"
-                  defaultValue={phone}
-                  ref={this.phoneInput}
-                />
-              </div>
-              <button type="submit" className="btn btn-block btn-light">
-                Guardar
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+            </div>
+          );
+        }}
+      </Consumer>
     );
   }
 }
