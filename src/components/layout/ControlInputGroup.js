@@ -1,4 +1,5 @@
 import React from "react";
+import classnames from "classnames";
 
 const ControlInputGroup = ({
   name,
@@ -6,20 +7,22 @@ const ControlInputGroup = ({
   type,
   placeholder,
   value,
-  onChange
+  onChange,
+  error
 }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
       <input
         type={type}
-        className="form-control"
+        className={classnames("form-control", { "is-invalid": error })}
         name={name}
         id={name}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
+      {error ? <div className="invalid-feedback">{error}</div> : null}
     </div>
   );
 };

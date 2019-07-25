@@ -7,7 +7,8 @@ class AddContact extends Component {
   state = {
     email: "isra@gmail.com",
     name: "Israel",
-    phone: "5555-555-555"
+    phone: "5555-555-555",
+    error: {}
   };
 
   onChange = e => {
@@ -18,7 +19,33 @@ class AddContact extends Component {
 
   onSaveContact = (dispatch, e) => {
     e.preventDefault();
-    const { name, email, phone } = this.state;
+    const { name, email, phone, error } = this.state;
+
+    if (!name.trim()) {
+      error.name = "Name required";
+    } else {
+      delete error.name;
+    }
+
+    if (!email.trim()) {
+      error.email = "Email required";
+    } else {
+      delete error.email;
+    }
+
+    if (!phone.trim()) {
+      error.phone = "Phone required";
+    } else {
+      delete error.phone;
+    }
+
+    if (Object.getOwnPropertyNames(error).length) {
+      this.setState({
+        error
+      });
+      return null;
+    }
+
     dispatch({
       type: "ADD_CONTACT",
       payload: {
@@ -34,10 +61,12 @@ class AddContact extends Component {
       email: "",
       phone: ""
     });
+
+    this.props.history.push("/");
   };
 
   render() {
-    const { name, email, phone } = this.state;
+    const { name, email, phone, error } = this.state;
 
     return (
       <Consumer>
@@ -56,6 +85,7 @@ class AddContact extends Component {
                       placeholder="Enter Email"
                       value={email}
                       onChange={this.onChange}
+                      error={error.email}
                     />
                     <ControlInputGroup
                       name="name"
@@ -64,6 +94,7 @@ class AddContact extends Component {
                       placeholder="Enter Name"
                       value={name}
                       onChange={this.onChange}
+                      error={error.name}
                     />
                     <ControlInputGroup
                       name="phone"
@@ -72,6 +103,7 @@ class AddContact extends Component {
                       placeholder="Enter Phone"
                       value={phone}
                       onChange={this.onChange}
+                      error={error.phone}
                     />
                     <button type="submit" className="btn btn-block btn-light">
                       Guardar
