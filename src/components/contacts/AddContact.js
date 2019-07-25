@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Consumer } from "../../context";
 import ControlInputGroup from "../layout/ControlInputGroup";
-import uuid from "uuid";
+// import uuid from "uuid";
+import axios from "axios";
+
+const urlUsers = "https://jsonplaceholder.typicode.com/users";
 
 class AddContact extends Component {
   state = {
@@ -46,23 +49,27 @@ class AddContact extends Component {
       return null;
     }
 
-    dispatch({
-      type: "ADD_CONTACT",
-      payload: {
-        id: uuid.v1(),
-        name,
-        email,
-        phone
-      }
-    });
+    // id: uuid.v1(),
+    const user = {
+      name,
+      email,
+      phone
+    };
 
-    this.setState({
-      name: "",
-      email: "",
-      phone: ""
-    });
+    axios.post(urlUsers, user).then(response => {
+      dispatch({
+        type: "ADD_CONTACT",
+        payload: response.data
+      });
 
-    this.props.history.push("/");
+      this.setState({
+        name: "",
+        email: "",
+        phone: ""
+      });
+
+      this.props.history.push("/");
+    });
   };
 
   render() {
