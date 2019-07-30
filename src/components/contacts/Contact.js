@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Consumer } from "../../context";
 import axios from "axios";
 
+import { Link } from "react-router-dom";
+
 const urlUsers = "https://jsonplaceholder.typicode.com/users";
 
 class Contact extends Component {
@@ -62,9 +64,19 @@ class Contact extends Component {
                 <i
                   id={id}
                   className="fas fa-times"
-                  style={{ float: "right", color: "red" }}
+                  style={{ float: "right", color: "red", cursor: "pointer" }}
                   onClick={this.onDeleteClick.bind(this, id, dispatch)}
                 />
+                <Link to={`/contact/edit/${id}`}>
+                  <i
+                    className="fas fa-edit"
+                    style={{
+                      cursor: "pointer",
+                      float: "right",
+                      marginRight: "10px"
+                    }}
+                  />
+                </Link>
               </h4>
               {showContactInfo ? (
                 <ul className="list-group">

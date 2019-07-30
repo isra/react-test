@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 
 const Context = React.createContext();
+const urlUsers = "https://jsonplaceholder.typicode.com/users";
 
-const reduder = (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case "DELETE_CONTACT":
       return {
@@ -17,23 +18,31 @@ const reduder = (state, action) => {
         ...state,
         contacts: [action.payload, ...state.contacts]
       };
+    case "UPDATE_CONTACT":
+      return {
+        ...state,
+        contacts: state.contacts.map(contact => {
+          if (contact.id === action.payload.id) {
+            contact = action.payload;
+          }
+          return contact;
+        })
+      };
     default:
       return state;
   }
 };
 
-const urlUsers = "https://jsonplaceholder.typicode.com/users";
-
 export class Provider extends Component {
-  componentDidMount() {
-    axios
+  async componentDidMount() {
+    await axios
       .get(urlUsers)
       .then(response => this.setState({ contacts: response.data }));
   }
 
   state = {
     contacts: [],
-    dispatch: action => this.setState(state => reduder(this.state, action))
+    dispatch: action => this.setState(state => reducer(this.state, action))
   };
 
   render() {
